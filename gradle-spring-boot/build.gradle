@@ -1,0 +1,100 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://repo1.maven.org/maven2" }
+    }
+    dependencies {
+        classpath("org.openapitools:openapi-generator-gradle-plugin:7.0.1")
+    }
+}
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.5'
+    id 'io.spring.dependency-management' version '1.1.3'
+    id 'org.openapi.generator' version "7.0.1"
+}
+
+group = 'tu.huynh'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+            srcDirs 'src/generated/java'
+        }
+    }
+}
+
+openApiGenerate {
+    generatorName = "spring"
+    library = "spring-boot"
+    verbose = false
+    groupId = "tu.huynh"
+    id = "gradle-spring-boot"
+    version = '0.0.1-SNAPSHOT'
+    inputSpec = "$rootDir/src/main/resources/swagger/api.yaml".toString()
+    outputDir = "$rootDir/src/generated".toString()
+    apiPackage = "tu.huynh.gradlespringboot.api"
+    invokerPackage = "tu.huynh.gradlespringboot.invoker"
+    modelPackage = "tu.huynh.gradlespringboot.model"
+    globalProperties = [
+            modelDocs: "false"
+    ]
+    configOptions = [
+            useSpringBoot3         : "true",
+            dateLibrary            : "java17",
+            sourceFolder           : "java",
+            useTags                : "true",
+            useOptional            : "true",
+            useBeanValidation      : "false",
+            interfaceOnly          : "true",
+            documentationProvider  : "none",
+            annotationLibrary      : "none",
+            hideGenerationTimestamp: "true",
+            unhandledException     : "true"
+
+    ]
+    skipValidateSpec = true
+    logToStderr = true
+    generateAliasAsModel = false
+    enablePostProcessFile = false
+    skipOverwrite = true
+    skipOperationExample = true
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-docker-compose'
+    implementation 'org.flywaydb:flyway-maven-plugin:9.22.3'
+
+    // openapitools
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
