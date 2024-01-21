@@ -4,12 +4,12 @@ This project serves as a hands-on learning exercise for deploying and managing a
 
 ## Usage
 
-### Setup aws environment
+#### Setup aws environment
 - Use terraform to initialize VPC and EC2 environments: [terraform-aws-initial](terraform-aws-initial/readme.md)
 
-### Apply Kubernetes resource
+#### Apply Kubernetes resource
 
-### Test the applications on using Kubernetes
+#### Test the applications on using Kubernetes
 - Testing the spring boot applications on using Kubernetes [gradle-spring-boot](gradle-spring-boot/readme.md)
 
 
