@@ -1,0 +1,28 @@
+# metaData
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nginx-depl
+# specifcation
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nginx-depl
+  template:
+    metadata:
+      labels:
+        app: nginx-depl
+    spec:
+      containers:
+      - image: nginx:1.16
+        imagePullPolicy: Always
+        name: nginx
+        posts:
+        - containerPort: 8080
+# Status (auto gen)
+
