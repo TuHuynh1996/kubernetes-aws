@@ -1,5 +1,5 @@
 variable "project_name" {
-  default     = "gpt-api"
+  default     = "kubernetes-aws"
   type        = string
   description = "project name injected into task"
 }

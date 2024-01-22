@@ -21,3 +21,7 @@ You need Minikute to be able to run and test Kubernetes on your local enviroment
 
 The command line tool for K8s cluster (only for Minikute) [Link](https://kubernetes.io/vi/docs/tasks/tools/install-kubectl/)
 
+```shell 
+    kubectl apply -f <config_file>
+```
+
