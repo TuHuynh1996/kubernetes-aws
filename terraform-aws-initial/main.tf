@@ -24,3 +24,54 @@ module "EC2" {
   vpc_id    = module.vpc.vpc_id
 }
 
+
+
+################################################################################
+# EKS Module
+################################################################################
+
+module "EKS" {
+  source  = "terraform-aws-modules/eks/aws" // https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
+  version = "19.21.0"
+
+  cluster_name                   = var.environment
+  cluster_endpoint_public_access = true
+
+  cluster_addons = {
+    coredns = {
+      most_recent = true
+    }
+  }
+
+  vpc_id                   = module.vpc.vpc_id
+  subnet_ids               = module.vpc.private_subnets_id
+  // TODO: check what is intra_subnets later
+  # control_plane_subnet_ids = module.vpc.intra_subnets
+
+  # EKS Managed Node Group(s)
+  eks_managed_node_group_defaults = {
+    ami_type                              = "AL2_x86_64"
+    instance_types                        = ["m5.large"]
+    attach_cluster_primary_security_group = true
+  }
+
+  eks_managed_node_groups = {
+    ascode-cluster-wg = {
+      min_size     = 1
+      max_size     = 2
+      desired_size = 1
+
+      instance_types = ["t3.large"]
+      capacity_type  = "SPOT"
+
+      tags = {
+        ExtraTag = "tu huynh example"
+      }
+    }
+  }
+  tags = {
+    Example    = var.environment
+    GithubRepo = "terraform-aws-eks"
+    GithubOrg  = "terraform-aws-modules"
+  }
+}
