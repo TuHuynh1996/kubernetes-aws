@@ -43,10 +43,10 @@ module "EKS" {
     }
   }
 
-  vpc_id                   = module.vpc.vpc_id
-  subnet_ids               = module.vpc.private_subnets_id
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = [module.vpc.public_subnets_id_a, module.vpc.public_subnets_id_b]
   // TODO: check what is intra_subnets later
-  # control_plane_subnet_ids = module.vpc.intra_subnets
+  # control_plane_subnet_ids = module.vpc.public_subnets_id_b
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {

@@ -7,17 +7,6 @@ locals {
   subnet_id = var.subnet_id
 }
 
-resource "aws_instance" "gpt" {
-  ami           = local.ami
-  instance_type = local.instance_type
-  subnet_id     = local.subnet_id
-  key_name      = "tuhuynh-us-east-2-key"
-  tags = {
-    Name = local.name
-  }
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
-}
-
 resource "aws_security_group" "allow_ssh" {
   name        = "allow-ssh-lab2"
   description = "Allow SSH inbound traffic"
